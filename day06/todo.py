@@ -27,7 +27,7 @@ def show_tasks():
             else:
                 status = "[ ]"
         
-        print(f"{i}. {status} {task['name']}")
+            print(f"{i}. {status} {task['name']}")
 
 def delete_task():
     if not tasks:
@@ -86,6 +86,47 @@ def show_stats():
 Всего задач: {total}
 Выполнено: {completed}
 Осталось: {remaining}""")
+    
+def search_tasks():
+    query = input("Введите текст для поиска: ")
+    found = False
+    
+    for i, task in enumerate(tasks, start=1):
+        if query in task["name"]:
+            found = True
+            
+            if task["done"]:
+                status = "[✓]"
+            else:
+                status = "[ ]"
+            
+            print(f"{i}. {status} {task['name']}")
+    if not found:
+        print("Ничего не найдено!")
+            
+def edit_task():
+    if not tasks:
+        print("Список задач пуст")
+    else:
+        for i, task in enumerate(tasks, start=1):
+            print(f"{i}. {task['name']}")
+        
+        try:
+            task_number = int(input("Введите номер задачи: "))
+            
+            if 1 <= task_number <= len(tasks):
+                new_task = input("Введите новую задачу: ")
+                tasks[task_number - 1]["name"] = new_task
+                tasks[task_number - 1]["done"] = False
+                save_tasks()
+                print("Задача успешно изменена!")
+                
+            else:
+                print("Такой задачи нет!")
+                
+        except ValueError:
+            print("Нужно ввести число!")
+
 def save_tasks():
     with open("tasks.json", "w", encoding="utf-8") as file:
         json.dump(tasks, file, ensure_ascii=False)
@@ -97,7 +138,9 @@ menu = """
 3. Удалить задачу
 4. Отметить выполненной
 5. Статистика
-6. Выход
+6. Поиск задачи
+7. Изменить задачу
+8. Выход
 """
 
 while True:
@@ -120,6 +163,12 @@ while True:
         show_stats()
         
     elif client_data == "6":
+        search_tasks()
+        
+    elif client_data == "7":
+        edit_task()
+    
+    elif client_data == "8":
         print("Пока)")
         break
     else:
