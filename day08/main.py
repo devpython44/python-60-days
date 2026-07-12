@@ -88,13 +88,51 @@ def load_player():
     except FileNotFoundError:
         print("Сохранение не найдено. Создан новый герой.")
 
+def shop():
+    while True:
+        print("""
+    === Магазин ===    
+        
+    1. Зелье лечения (+20 HP) - 20 золота
+    2. Улучшить урон (+5) - 50 золота
+    3. Выход
+    """)
+        choice = input("Выбор: ")
+        
+        if choice == "1":
+            if player["gold"] >= 20:
+                player["gold"] -= 20
+                player["hp"] += 20
+                save_player()
+                
+                print("Зелье применено!")
+            else:
+                print("Недостаточно золота!")
+                
+        elif choice == "2":
+            if player["gold"] >= 50:
+                player["gold"] -= 50
+                player["damage"] += 5
+                save_player()
+                
+                print("Урон улучшен!")
+            else:
+                print("Недостаточно золота!")    
+                
+        elif choice == "3":
+            break
+
+        else:
+            print("Ввод некоректный!")
+
 menu = """
 === RPG ===
 
 1. Показать героя
 2. Исследовать лес
 3. Бой с волком
-4. Выход
+4. Магазин
+5. Выход
 """
 
 load_player()
@@ -110,8 +148,11 @@ while True:
         
     elif choice == "3":
         fight_wolf()
-    
+        
     elif choice == "4":
+        shop()
+    
+    elif choice == "5":
         save_player()
         print("Пока")
         break
