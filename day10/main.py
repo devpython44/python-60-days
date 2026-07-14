@@ -34,6 +34,14 @@ orc = {
     "xp": 40
 }
 
+boss = {
+    "name": "Вожак волков",
+    "hp": 100,
+    "damage": 30,
+    "gold": 100,
+    "xp": 100
+}
+
 def show_player():
     print("=== Герой ===")
     print(f"Имя: {player['name']}")
@@ -65,10 +73,10 @@ def check_level_up():
         player["hp"] += 20
         player["damage"] += 5
         
-        save_player()
-        
         print("Новый уровень!")
         print(f"Теперь твой уровень: {player['level']}")
+    
+    save_player()
 
 def fight_enemy():
     enemies = [wolf, goblin, orc]
@@ -100,6 +108,10 @@ def fight_enemy():
         if player["hp"] <= 0:
             print("Ты погиб!")
             break
+
+def fight_boss():
+    print("\nТебе встретился Вожак волков!\n")
+    fight_enemy(boss)
 
 def save_player(): 
     with open("player.json", "w", encoding="utf-8") as file:
@@ -166,7 +178,8 @@ menu = """
 2. Исследовать лес
 3. Бой
 4. Магазин
-5. Выход
+5. Босс
+6. Выход
 """
 
 load_player()
@@ -187,6 +200,9 @@ while True:
         shop()
     
     elif choice == "5":
+        fight_boss()
+    
+    elif choice == "6":
         save_player()
         print("Пока")
         break
